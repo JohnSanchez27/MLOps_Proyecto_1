@@ -1,10 +1,10 @@
-# Proyecto MLOps: Ambiente de Desarrollo con Docker y JupyterLab
+# 📌 Proyecto MLOps: Ambiente de Desarrollo con Docker y JupyterLab
 
 Este repositorio contiene un entorno de desarrollo para un proyecto de Machine Learning en el que se demuestran capacidades de ingesta, validación y transformación de datos, así como el versionado del código y del ambiente de desarrollo. El objetivo es proveer un entorno aislado (mediante Docker) que permita ejecutar notebooks de Jupyter, facilitando la reproducibilidad y la colaboración.
 
 ---
 
-## Tabla de Contenido
+## 🖥 Tabla de Contenido
 
 1. [Contexto General del Proyecto](#contexto-general-del-proyecto)
 2. [Arquitectura y Archivos Principales](#arquitectura-y-archivos-principales)
@@ -33,7 +33,7 @@ El dataset principal es el conjunto de datos de tipo de cubierta forestal (Cover
 
 ---
 
-## Arquitectura y Archivos Principales
+## 📂 Arquitectura y Archivos Principales
 
 Este proyecto forma parte del curso de MLOps y tiene como objetivo construir un entorno de desarrollo para Machine Learning utilizando Docker, Jupyter Notebook y TensorFlow Extended (TFX). Se implementan procesos de transformación y validación de datos como parte de una canalización de datos.
 
@@ -74,7 +74,7 @@ En el repositorio encontrará:
 
 ---
 
-## Requisitos Previos
+## 🛠 Requisitos Previos
 
 - **Docker** instalado y funcionando en el sistema.
 - **Docker Compose** instalado.  
@@ -82,7 +82,7 @@ En el repositorio encontrará:
 
 ---
 
-## Pasos para Levantar el Contenedor
+## 🚀 Pasos para Levantar el Contenedor
 
 1. **Clonar el repositorio** o descargarlo en tu máquina local.
    ```bash
@@ -105,7 +105,7 @@ En el repositorio encontrará:
 
     Debería ver un contenedor llamado desarrollo_container (o el que hayas definido en docker-compose.yml) en ejecución.
 
-## Acceso a JupyterLab
+## 🎨  Acceso a JupyterLab
 
 - Una vez que el contenedor está arriba, abre tu navegador y navega a:
 
@@ -114,7 +114,7 @@ En el repositorio encontrará:
 - JupyterLab solicitará un token de acceso que se mostrará en la consola de tu terminal (donde corriste docker-compose up) o en los logs del contenedor. Copia ese token y pégalo en el navegador para iniciar sesión. (Alternativamente, puedes usar la URL completa con el token que se imprime en la consola.)
 
 
-## Importancia del Volumen ./work:/work
+## 💾 Importancia del Volumen ./work:/work
 
 El volumen definido en docker-compose.yml:
 
@@ -130,7 +130,7 @@ mapea la carpeta local work/ a la carpeta /work dentro del contenedor. Esto impl
 
 - **Facilidad de Uso:** No necesita reconstruir la imagen para cada cambio en los notebooks o scripts.
 
-## Sugerencias y Notas Adicionales
+## 🔗 Sugerencias y Notas Adicionales
 
 - **Uso de TFX y Beam**: Se incluyeron paquetes como `apache-beam[interactive]`, `tfx`, `tensorflow-data-validation`, etc. Esto permite la **ingesta, validación y transformación** de datos de forma escalable y reproducible.
 
