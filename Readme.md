@@ -102,8 +102,9 @@ En el repositorio encontrará:
 4. **Verificar que el contenedor esté corriendo:**
    ```bash
     docker ps
-
-    Debería ver un contenedor llamado desarrollo_container (o el que hayas definido en docker-compose.yml) en ejecución.
+   ```
+  
+  Debería ver un contenedor llamado desarrollo_container (o el que hayas definido en docker-compose.yml) en ejecución.
 
 ## 🎨  Acceso a JupyterLab
 
