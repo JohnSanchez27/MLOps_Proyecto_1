@@ -20,15 +20,16 @@ Este repositorio contiene un entorno de desarrollo para un proyecto de Machine L
 
 Este proyecto está enfocado en la **creación de un pipeline de datos** que incluye:
 
-- **Selección de características** (feature selection).
+
 - **Ingesta** y lectura de un conjunto de datos.
-- **Validación** y **estadísticas** (StatisticsGen, ExampleValidator).
+- **Validación y estadísticas** (StatisticsGen, ExampleValidator).
+- **Esquema de datos** (SchemaGen, ImportSchemaGen).
 - **Transformación** de los datos (Transform).
 - **Gestión de metadatos** de ML (ML Metadata).
 - **Seguimiento de la procedencia** de los datos.
 - **Versión de código y ambiente** de desarrollo (usando Git y contenedores Docker).
 
-El dataset principal propuesto es una variante del **conjunto de datos de tipo de cubierta forestal** (Cover Type). Aun así, la estructura y componentes TFX (TensorFlow Extended) son fácilmente adaptables a otros conjuntos de datos y flujos de trabajo de ML.
+El dataset principal es el conjunto de datos de tipo de cubierta forestal (Cover Type). La estructura y componentes TFX (TensorFlow Extended) son fácilmente adaptables a otros conjuntos de datos y flujos de trabajo de ML.
 
 ---
 
@@ -37,21 +38,27 @@ El dataset principal propuesto es una variante del **conjunto de datos de tipo d
 Este proyecto forma parte del curso de MLOps y tiene como objetivo construir un entorno de desarrollo para Machine Learning utilizando Docker, Jupyter Notebook y TensorFlow Extended (TFX). Se implementan procesos de transformación y validación de datos como parte de una canalización de datos.
 
 ```bash
-Proyecto/
+
+MLOps_Proyecto_1/
 |-- work/
-|   |-- Transformacion_Datos/
-|   |   |-- data/
-|   |   |-- tfx_pipeline/
-|   |   |   |-- census_constants.py
-|   |   |   |-- census_transform.py
-|   |   |-- TFT.ipynb
-|   |-- Validacion_de_Datos/
-|   |   |-- cubierta_forestal.csv
-|   |   |-- TFDV.ipynb
+|   |-- data/
+|   |   |-- covertype/
+|   |       |-- covertype_train.csv
+|   |-- tfx_pipeline/
+|       |-- CsvExampleGen/
+|       |-- ExampleValidator/
+|       |-- ImportSchemaGen/
+|       |-- SchemaGen/
+|       |-- StatisticsGen/
+|       |-- Transform/
+|       |-- metadata.sqlite
+|       |-- schema.pptxt
+|   |-- ml_pipeline_tfx.ipynb
+|   |-- preprocessing.py
 |-- Docker-compose.yml
 |-- Dockerfile
 |-- Readme.md
-|-- requirements.txt
+
 ```
 
 En el repositorio encontrará:
@@ -63,15 +70,15 @@ En el repositorio encontrará:
     - Expone el puerto `8888`.
     - Monta un volumen local `./work:/work`.
 - **`requirements.txt`**: Listado de las dependencias de Python que serán instaladas en el contenedor.
-- **Carpeta `work/`**: Directorio de trabajo mapeado al contenedor, donde se ubican los notebooks (`.ipynb`) y el código fuente (`.py`).
+- **Carpeta `work/`**: Directorio de trabajo mapeado al contenedor, donde se ubican los notebooks (`.ipynb`), el código fuente (`.py`) y componentes TFX.
 
 ---
 
 ## Requisitos Previos
 
-- **Docker** instalado y funcionando en tu sistema.
+- **Docker** instalado y funcionando en el sistema.
 - **Docker Compose** instalado.  
-  > Verifica con `docker -v` y `docker-compose -v` que ambas herramientas estén disponibles.
+  > Verifique con `docker -v` y `docker-compose -v` que ambas herramientas estén disponibles.
 
 ---
 
@@ -79,16 +86,16 @@ En el repositorio encontrará:
 
 1. **Clonar el repositorio** o descargarlo en tu máquina local.
    ```bash
-   git clone https://github.com/JohnSanchez27/Proyecto_1_MLOps.git #HTTPS
-   git clone git@github.com:JohnSanchez27/Proyecto_1_MLOps.git #SSH
-   cd Proyecto_1_MLOps
+   git clone https://github.com/JohnSanchez27/MLOps_Proyecto_1 #HTTPS
+   git clone git@github.com:JohnSanchez27/MLOps_Proyecto_1.git #SSH
+   cd MLOps_Proyecto_1
 
 
 2. **Construir la imagen** definida en el Dockerfile usando Docker Compose:
    ```bash
     docker-compose build
 
-3. **Iniciar el contenedor** den segundo plano:
+3. **Iniciar el contenedor** en segundo plano:
    ```bash
     docker-compose up -d
 
@@ -96,7 +103,7 @@ En el repositorio encontrará:
    ```bash
     docker ps
 
-    Deberías ver un contenedor llamado desarrollo_container (o el que hayas definido en docker-compose.yml) en ejecución.
+    Debería ver un contenedor llamado desarrollo_container (o el que hayas definido en docker-compose.yml) en ejecución.
 
 ## Acceso a JupyterLab
 
@@ -111,25 +118,25 @@ En el repositorio encontrará:
 
 El volumen definido en docker-compose.yml:
 
-   ```yaml
-    volumes:
-    - ./work:/work
+```yml
+  volumes:
+  - ./work:/work
 ```
 mapea la carpeta local work/ a la carpeta /work dentro del contenedor. Esto implica:
 
-- Persistencia: Todos los archivos creados o modificados dentro de la carpeta /work del contenedor se verán reflejados en tu carpeta local ./work.
+- **Persistencia:** Todos los archivos creados o modificados dentro de la carpeta /work del contenedor se verán reflejados en su carpeta local ./work.
 
-- Colaboración: Puedes editar tu código o notebooks con tu editor local y ver los cambios reflejados de inmediato en el contenedor (y viceversa).
+- **Colaboración:** Puede editar su código o notebooks con su editor local y ver los cambios reflejados de inmediato en el contenedor (y viceversa).
 
-- Facilidad de Uso: No necesitas reconstruir la imagen para cada cambio en los notebooks o scripts.
+- **Facilidad de Uso:** No necesita reconstruir la imagen para cada cambio en los notebooks o scripts.
 
 ## Sugerencias y Notas Adicionales
 
 - **Uso de TFX y Beam**: Se incluyeron paquetes como `apache-beam[interactive]`, `tfx`, `tensorflow-data-validation`, etc. Esto permite la **ingesta, validación y transformación** de datos de forma escalable y reproducible.
 
-- **ML Metadata**: Para rastrear artefactos y ejecuciones, TFX utiliza un backend de metadatos (por defecto `sqlite`), lo que te permite ver qué datos se han procesado y cómo se han transformado.
+- **ML Metadata**: Para rastrear artefactos y ejecuciones, TFX utiliza un backend de metadatos (por defecto `sqlite`), lo que permite ver qué datos se han procesado y cómo se han transformado.
 
-- **Extensión de la Funcionalidad**: Si necesitas librerías adicionales, puedes agregarlas a `requirements.txt` y reconstruir la imagen con:
+- **Extensión de la Funcionalidad**: Si necesita librerías adicionales, puede agregarlas a `requirements.txt` y reconstruir la imagen con:
   ```bash
   docker-compose build
 
